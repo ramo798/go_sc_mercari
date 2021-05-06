@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -59,7 +60,7 @@ func get_all_page_url(origin_url string) []string {
 	return url_list
 }
 
-func get_details_item(url string) {
+func get_details_item(url string) (string, string, string) {
 	res, err := http.Get("https://www.mercari.com" + url)
 	if err != nil {
 		log.Println(err)
@@ -68,7 +69,15 @@ func get_details_item(url string) {
 
 	doc, _ := goquery.NewDocumentFromReader(res.Body)
 	text := doc.Find(".item-description p").First().Text()
-	fmt.Print(text)
+	var no string
+	if strings.Contains(text, "[") && strings.Contains(text, "]") {
+		no = text[strings.Index(text, "[")+1 : strings.Index(text, "]")]
+		// fmt.Print(text[strings.Index(text, "[")+1 : strings.Index(text, "]")])
+	}
+	title := doc.Find(".item-name").First().Text()
+	// fmt.Println(text)
+	// fmt.Println(title)
+	return no, title, "https://www.mercari.com" + url
 }
 
 func main() {
@@ -80,5 +89,6 @@ func main() {
 	// items_url := get_items_url(page_url)
 	// fmt.Println(len(items_url))
 
-	get_details_item("/jp/items/m46693656082/")
+	no, title, url := get_details_item("/jp/items/m46693656082/")
+	fmt.Println(no, title, url)
 }
