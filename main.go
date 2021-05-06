@@ -60,7 +60,7 @@ func get_all_page_url(origin_url string) []string {
 	return url_list
 }
 
-func get_details_item(url string) (string, string, string) {
+func get_details_item(url string) (bool, string, string, string) {
 	res, err := http.Get("https://www.mercari.com" + url)
 	if err != nil {
 		log.Println(err)
@@ -68,27 +68,37 @@ func get_details_item(url string) (string, string, string) {
 	defer res.Body.Close()
 
 	doc, _ := goquery.NewDocumentFromReader(res.Body)
+
 	text := doc.Find(".item-description p").First().Text()
 	var no string
 	if strings.Contains(text, "[") && strings.Contains(text, "]") {
 		no = text[strings.Index(text, "[")+1 : strings.Index(text, "]")]
-		// fmt.Print(text[strings.Index(text, "[")+1 : strings.Index(text, "]")])
 	}
+
+	var soldout bool
+	sold := doc.Find(".item-box-container .item-sold-out-badge")
+	if sold.Text() == "" {
+		soldout = false
+	} else {
+		soldout = true
+	}
+
 	title := doc.Find(".item-name").First().Text()
-	// fmt.Println(text)
-	// fmt.Println(title)
-	return no, title, "https://www.mercari.com" + url
+
+	return soldout, no, title, "https://www.mercari.com" + url
 }
 
 func main() {
-	// url := "/jp/u/951762445/"
+	url := "/jp/u/951762445/"
 
-	// page_url := get_all_page_url(url)
-	// fmt.Println(page_url)
+	page_url := get_all_page_url(url)
+	fmt.Println(page_url)
 
-	// items_url := get_items_url(page_url)
-	// fmt.Println(len(items_url))
+	items_url := get_items_url(page_url)
+	fmt.Println(len(items_url))
+	for _, url := range items_url {
+		soldout, no, title, item_url := get_details_item(url)
+		fmt.Println(soldout, no, title, item_url)
+	}
 
-	no, title, url := get_details_item("/jp/items/m46693656082/")
-	fmt.Println(no, title, url)
 }
