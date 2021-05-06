@@ -1,9 +1,12 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -88,6 +91,12 @@ func get_details_item(url string) (bool, string, string, string) {
 	return soldout, no, title, "https://www.mercari.com" + url
 }
 
+func failOnError(err error) {
+	if err != nil {
+		log.Fatal("Error:", err)
+	}
+}
+
 func main() {
 	url := "/jp/u/951762445/"
 
@@ -96,9 +105,20 @@ func main() {
 
 	items_url := get_items_url(page_url)
 	fmt.Println(len(items_url))
+
+	file, err := os.OpenFile("mercari_list.csv", os.O_WRONLY|os.O_CREATE, 0600)
+	failOnError(err)
+	defer file.Close()
+	err = file.Truncate(0)
+	failOnError(err)
+	writer := csv.NewWriter(file)
+
 	for _, url := range items_url {
 		soldout, no, title, item_url := get_details_item(url)
 		fmt.Println(soldout, no, title, item_url)
+		writer.Write([]string{strconv.FormatBool(soldout), no, title, item_url})
 	}
+
+	writer.Flush()
 
 }
