@@ -10,7 +10,8 @@ import (
 
 type Item_info struct {
 	Product_number string `dynamo:"Product_number"`
-	test           int
+	Test           int    `dynamo:"Test_no"`
+	Text           string `dynamo:"Text"`
 }
 
 type Item struct {
@@ -43,11 +44,21 @@ func Create() {
 	table := db.Table("mercari_items")
 
 	item := Item_info{
-		Product_number: "MyHash",
-		test:           1,
+		Product_number: "NT116",
+		Test:           1123,
+		Text:           "oehfwoeihfwoihe",
 	}
 
 	if err := table.Put(item).Run(); err != nil {
 		fmt.Printf("Failed to put item[%v]\n", err)
 	}
+
+	var results []Item_info
+
+	if err := table.Scan().All(&results); err != nil {
+		fmt.Printf("Failed to put item[%v]\n", err)
+	}
+
+	fmt.Println(results)
+
 }
