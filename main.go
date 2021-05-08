@@ -1,13 +1,10 @@
 package main
 
 import (
-	"encoding/csv"
-	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"strconv"
 	"strings"
+	"test/db"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -98,27 +95,29 @@ func failOnError(err error) {
 }
 
 func main() {
-	url := "/jp/u/951762445/"
+	// url := "/jp/u/951762445/"
 
-	page_url := get_all_page_url(url)
-	fmt.Println(page_url)
+	// page_url := get_all_page_url(url)
+	// fmt.Println(page_url)
 
-	items_url := get_items_url(page_url)
-	fmt.Println(len(items_url))
+	// items_url := get_items_url(page_url)
+	// fmt.Println(len(items_url))
 
-	file, err := os.OpenFile("mercari_list.csv", os.O_WRONLY|os.O_CREATE, 0600)
-	failOnError(err)
-	defer file.Close()
-	err = file.Truncate(0)
-	failOnError(err)
-	writer := csv.NewWriter(file)
+	// file, err := os.OpenFile("mercari_list.csv", os.O_WRONLY|os.O_CREATE, 0600)
+	// failOnError(err)
+	// defer file.Close()
+	// err = file.Truncate(0)
+	// failOnError(err)
+	// writer := csv.NewWriter(file)
 
-	for _, url := range items_url {
-		soldout, no, title, item_url := get_details_item(url)
-		fmt.Println(soldout, no, title, item_url)
-		writer.Write([]string{strconv.FormatBool(soldout), no, title, item_url})
-	}
+	// for _, url := range items_url {
+	// 	soldout, no, title, item_url := get_details_item(url)
+	// 	fmt.Println(soldout, no, title, item_url)
+	// 	writer.Write([]string{strconv.FormatBool(soldout), no, title, item_url})
+	// }
 
-	writer.Flush()
+	// writer.Flush()
+
+	db.Create()
 
 }

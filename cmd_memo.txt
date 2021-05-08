@@ -1,0 +1,1 @@
+aws dynamodb create-table --endpoint-url http://localhost:8000 --table-name mercari_items --attribute-definitions AttributeName=Product_number,AttributeType=S  --key-schema AttributeName=Product_number,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
