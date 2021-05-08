@@ -11,7 +11,7 @@ import (
 )
 
 // Create() はmodel.Item_infoを渡すとPUTする関数
-func Create(item model.Item_info) {
+func Create(item model.Item_info_mercari) {
 	dynamoDbRegion := os.Getenv("AWS_REGION")
 	dynamoDbEndpoint := os.Getenv("DYNAMO_ENDPOINT")
 	disableSsl := false
@@ -62,7 +62,7 @@ func Scan() {
 	})
 
 	table := db.Table("mercari_items")
-	var results []model.Item_info
+	var results []model.Item_info_mercari
 
 	if err := table.Scan().All(&results); err != nil {
 		fmt.Printf("Failed to put item[%v]\n", err)

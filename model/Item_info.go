@@ -1,7 +1,8 @@
 package model
 
-type Item_info struct {
+type Item_info_mercari struct {
 	Product_number string `dynamo:"Product_number"`
-	Test           int    `dynamo:"Test_no"`
-	Text           string `dynamo:"Text"`
+	Name           string `dynamo:"Name"`
+	Url            string `dynamo:"Url"`
+	Sold           bool   `dynamo:"Sold"`
 }

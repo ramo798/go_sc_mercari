@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
-	"test/db"
-	"test/model"
+	"test/crawler"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -119,13 +119,16 @@ func main() {
 
 	// writer.Flush()
 
-	item := model.Item_info{
-		Product_number: "MN09",
-		Test:           6,
-		Text:           "wieuhe",
-	}
+	// item := model.Item_info{
+	// 	Product_number: "MN09",
+	// 	Test:           6,
+	// 	Text:           "wieuhe",
+	// }
 
-	db.Create(item)
-	db.Scan()
+	// db.Create(item)
+	// db.Scan()
+	// url := "/jp/u/951762445/"
+	mercari_items := crawler.Get_items_on_mercari("951762445")
+	fmt.Println(mercari_items)
 
 }
