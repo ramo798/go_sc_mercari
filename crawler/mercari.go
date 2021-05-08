@@ -102,6 +102,8 @@ func Get_details_item(url string) model.Item_info_mercari {
 }
 
 func Get_items_on_mercari(userid string) []model.Item_info_mercari {
+	var res []model.Item_info_mercari
+
 	url_list := Get_all_page_url(userid)
 	items_url := Get_items_url(url_list)
 
@@ -110,10 +112,8 @@ func Get_items_on_mercari(userid string) []model.Item_info_mercari {
 
 	for _, s := range items_url {
 		item_info := Get_details_item(s)
-		fmt.Println(item_info)
-
+		res = append(res, item_info)
 	}
 
-	var res []model.Item_info_mercari
 	return res
 }
