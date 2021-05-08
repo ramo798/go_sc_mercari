@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 	"test/db"
+	"test/model"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -118,6 +119,13 @@ func main() {
 
 	// writer.Flush()
 
-	db.Create()
+	item := model.Item_info{
+		Product_number: "MN09",
+		Test:           6,
+		Text:           "wieuhe",
+	}
+
+	db.Create(item)
+	db.Scan()
 
 }
