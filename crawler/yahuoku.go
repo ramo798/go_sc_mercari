@@ -129,7 +129,7 @@ func Get_items_on_yahuoku(userid string) []model.Item_info_mercari {
 
 	for _, s := range items_url {
 		item_info := Get_details_item_y(s)
-		// log.Println(item_info)
+		log.Println(item_info)
 		res = append(res, item_info)
 	}
 
