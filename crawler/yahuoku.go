@@ -1,9 +1,9 @@
 package crawler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 	"test/model"
 
@@ -100,6 +100,9 @@ func Get_details_item_y(url string) model.Item_info_mercari {
 	if strings.Contains(text, "[") && strings.Contains(text, "]") {
 		no = text[strings.Index(text, "[")+1 : strings.Index(text, "]")]
 	}
+	if len(no) == 0 {
+		no = "NON"
+	}
 	// log.Println(no)
 
 	var soldout bool = false
@@ -121,14 +124,15 @@ func Get_items_on_yahuoku(userid string) []model.Item_info_mercari {
 	var res []model.Item_info_mercari
 
 	url_list := Get_all_page_url_y(userid)
-	fmt.Println((url_list))
+	// fmt.Println((url_list))
 	items_url := Get_items_url_y(url_list)
 
-	fmt.Println(items_url)
-	fmt.Println(len(items_url))
+	// fmt.Println(items_url)
+	log.Println("Scraping START", "username:", userid, "個数:", strconv.Itoa(len(items_url)))
 
 	for _, s := range items_url {
 		item_info := Get_details_item_y(s)
+		item_info.Username = userid
 		log.Println(item_info)
 		res = append(res, item_info)
 	}

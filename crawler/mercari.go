@@ -1,9 +1,9 @@
 package crawler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 	"test/model"
 
@@ -80,6 +80,9 @@ func Get_details_item(url string) model.Item_info_mercari {
 	if strings.Contains(text, "[") && strings.Contains(text, "]") {
 		no = text[strings.Index(text, "[")+1 : strings.Index(text, "]")]
 	}
+	if len(no) == 0 {
+		no = "NON"
+	}
 
 	var soldout bool
 	sold := doc.Find(".item-box-container .item-sold-out-badge")
@@ -101,17 +104,17 @@ func Get_details_item(url string) model.Item_info_mercari {
 	return item_info
 }
 
-func Get_items_on_mercari(userid string) []model.Item_info_mercari {
+func Get_items_on_mercari(userid string, username string) []model.Item_info_mercari {
 	var res []model.Item_info_mercari
 
 	url_list := Get_all_page_url(userid)
 	items_url := Get_items_url(url_list)
-
-	fmt.Println(items_url)
-	fmt.Println(len(items_url))
+	log.Println("Scraping START", "username:", username, "個数:", strconv.Itoa(len(items_url)))
 
 	for _, s := range items_url {
 		item_info := Get_details_item(s)
+		item_info.Username = username
+		log.Println(item_info)
 		res = append(res, item_info)
 	}
 

@@ -5,4 +5,5 @@ type Item_info_mercari struct {
 	Name           string `dynamo:"Name"`
 	Url            string `dynamo:"Url"`
 	Sold           bool   `dynamo:"Sold"`
+	Username       string `dynamo:"Username"`
 }

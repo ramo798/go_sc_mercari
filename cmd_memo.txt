@@ -1,7 +1,9 @@
 docker stop $(docker ps -q)
 
-docker rm $(docker ps -q -a)\
+docker rm $(docker ps -q -a)
 
 docker run -d --name dynamodb -p 8000:8000 amazon/dynamodb-local
 
 aws dynamodb create-table --endpoint-url http://localhost:8000 --table-name mercari_items --attribute-definitions AttributeName=Product_number,AttributeType=S  --key-schema AttributeName=Product_number,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+
+aws dynamodb create-table --endpoint-url http://localhost:8000 --table-name yahuoku_items --attribute-definitions AttributeName=Product_number,AttributeType=S  --key-schema AttributeName=Product_number,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
