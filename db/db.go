@@ -38,7 +38,7 @@ func Create(item model.Item_info_mercari, table_name string) {
 
 }
 
-func Scan(table_name string) {
+func Scan(table_name string) []model.Item_info_mercari {
 	dynamoDbRegion := os.Getenv("AWS_REGION")
 	dynamoDbEndpoint := os.Getenv("DYNAMO_ENDPOINT")
 	disableSsl := false
@@ -63,5 +63,6 @@ func Scan(table_name string) {
 		fmt.Printf("Failed to put item[%v]\n", err)
 	}
 
-	fmt.Println(results)
+	// fmt.Println(results)
+	return results
 }
