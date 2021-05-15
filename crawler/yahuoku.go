@@ -1,9 +1,9 @@
 package crawler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
 	"test/model"
 
@@ -120,22 +120,71 @@ func Get_details_item_y(url string) model.Item_info_mercari {
 	return item_info
 }
 
+func Get_items_url_y_for_process(url string) []string {
+	var resUrl []string
+
+	res, err := http.Get(url)
+	if err != nil {
+		log.Println(err)
+	}
+	defer res.Body.Close()
+
+	doc, _ := goquery.NewDocumentFromReader(res.Body)
+	doc.Find(".inner a").Each(func(i int, s *goquery.Selection) {
+		url, _ := s.Attr("href")
+		if url != "#dummyWatch" && url != "https://auctions.yahoo.co.jp/search/advanced?" {
+			resUrl = append(resUrl, url)
+		}
+	})
+
+	resUrl = duplicate_deletion(resUrl)
+
+	return resUrl
+}
+
+func process(url string, userid string, ch chan []model.Item_info_mercari) {
+	// defer wg.Done()
+	log.Println(2)
+	var list []model.Item_info_mercari
+	items_url := Get_items_url_y_for_process(url)
+	for _, s := range items_url {
+		item_info := Get_details_item_y(s)
+		// log.Println(item_info)
+		item_info.Username = userid
+		list = append(list, item_info)
+	}
+	log.Println("in process")
+	ch <- list
+
+}
+
 func Get_items_on_yahuoku(userid string) []model.Item_info_mercari {
 	var res []model.Item_info_mercari
 
 	url_list := Get_all_page_url_y(userid)
-	// fmt.Println((url_list))
-	items_url := Get_items_url_y(url_list)
 
-	// fmt.Println(items_url)
-	log.Println("Scraping START", "username:", userid, "個数:", strconv.Itoa(len(items_url)))
-
-	for _, s := range items_url {
-		item_info := Get_details_item_y(s)
-		item_info.Username = userid
-		log.Println(item_info)
-		res = append(res, item_info)
+	// wg := new(sync.WaitGroup)
+	ch := make([]chan []model.Item_info_mercari, len(url_list))
+	for i, v := range url_list {
+		// wg.Add(1)
+		ch[i] = make(chan []model.Item_info_mercari)
+		go process(v, userid, ch[i])
+	}
+	// wg.Wait()
+	fmt.Println(2222222, ch)
+	for i, _ := range ch {
+		// fmt.Println(<-ch[i])
+		// for _, s := range <-ch[i] {
+		// res = append(res, s)
+		// }
+		res = append(res, <-ch[i]...)
+		close(ch[i])
 	}
 
+	// close(ch)
+	fmt.Println("Finish!")
+
+	fmt.Println(res)
+	fmt.Println(len(res))
 	return res
 }

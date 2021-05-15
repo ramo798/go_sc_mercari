@@ -1,6 +1,6 @@
 package main
 
-import "test/csvmaker"
+import "test/crawler"
 
 func main() {
 	// mercari_items := crawler.Get_items_on_mercari("951762445", "maron")
@@ -24,7 +24,7 @@ func main() {
 	// 		if i.Product_number == "NON" {
 	// 			i.Product_number = "NN" + strconv.Itoa(index)
 	// 		}
-	// 		// log.Println("writing", i)
+	// 		log.Println("writing", i)
 	// 		db.Create(i, "yahuoku_items")
 	// 	}
 	// }
@@ -36,12 +36,14 @@ func main() {
 	// 		if i.Product_number == "NON" {
 	// 			i.Product_number = "NN" + strconv.Itoa(index)
 	// 		}
-	// 		// log.Println("writing", i)
+	// 		log.Println("writing", i)
 	// 		db.Create(i, "yahuoku_items")
 	// 	}
 	// }
 
 	// // db.Scan("yahuoku_items")
 
-	csvmaker.Makecsv()
+	// csvmaker.Makecsv()
+
+	crawler.Get_items_on_yahuoku("tomokimi_777")
 }
