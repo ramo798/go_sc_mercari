@@ -1,7 +1,6 @@
 package crawler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -143,17 +142,15 @@ func Get_items_url_y_for_process(url string) []string {
 }
 
 func process(url string, userid string, ch chan []model.Item_info_mercari) {
-	// defer wg.Done()
-	log.Println(2)
+	log.Println("process start", url)
 	var list []model.Item_info_mercari
 	items_url := Get_items_url_y_for_process(url)
 	for _, s := range items_url {
 		item_info := Get_details_item_y(s)
-		// log.Println(item_info)
 		item_info.Username = userid
 		list = append(list, item_info)
 	}
-	log.Println("in process")
+
 	ch <- list
 
 }
@@ -163,28 +160,16 @@ func Get_items_on_yahuoku(userid string) []model.Item_info_mercari {
 
 	url_list := Get_all_page_url_y(userid)
 
-	// wg := new(sync.WaitGroup)
 	ch := make([]chan []model.Item_info_mercari, len(url_list))
 	for i, v := range url_list {
-		// wg.Add(1)
 		ch[i] = make(chan []model.Item_info_mercari)
 		go process(v, userid, ch[i])
 	}
-	// wg.Wait()
-	fmt.Println(2222222, ch)
-	for i, _ := range ch {
-		// fmt.Println(<-ch[i])
-		// for _, s := range <-ch[i] {
-		// res = append(res, s)
-		// }
+
+	for i := range ch {
 		res = append(res, <-ch[i]...)
 		close(ch[i])
 	}
 
-	// close(ch)
-	fmt.Println("Finish!")
-
-	fmt.Println(res)
-	fmt.Println(len(res))
 	return res
 }
