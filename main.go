@@ -35,10 +35,15 @@ func unique(list []model.Item_info_mercari) ([]model.Item_info_mercari, []model.
 }
 
 func division() {
+	db.Create_table("mercari_items")
+	db.Create_table("yahuoku_items")
+
 	log.Println("START", "maron")
 	mercari_items := crawler.Get_items_on_mercari("951762445", "maron")
 	log.Println("maron items: ", len(mercari_items))
-	for index, i := range mercari_items {
+
+	uniq, n_unic := unique(mercari_items)
+	for index, i := range uniq {
 		if !i.Sold {
 			if i.Product_number == "NON" {
 				i.Product_number = "NN" + strconv.Itoa(index)
@@ -46,7 +51,16 @@ func division() {
 			log.Println("writing", i)
 			db.Create(i, "mercari_items")
 		}
-
+	}
+	for index, j := range n_unic {
+		if !j.Sold {
+			if j.Product_number == "NON" {
+				j.Product_number = "NN" + strconv.Itoa(index)
+			}
+			j.Product_number = strconv.Itoa(index) + "+" + j.Product_number
+			log.Println("writing", j)
+			db.Create(j, "mercari_items")
+		}
 	}
 	// db.Scan("mercari_items")
 
@@ -59,7 +73,7 @@ func division() {
 	yj := crawler.Get_items_on_yahuoku("tomokimi_777")
 	y_items = append(y_items, yj...)
 
-	uniq, n_unic := unique(y_items)
+	uniq, n_unic = unique(y_items)
 
 	for index, j := range uniq {
 		if !j.Sold {
@@ -81,30 +95,6 @@ func division() {
 			db.Create(j, "yahuoku_items")
 		}
 	}
-
-	// log.Println("younghoho_1121 items: ", len(yi))
-	// for index, i := range yi {
-	// 	if !i.Sold {
-	// 		if i.Product_number == "NON" {
-	// 			i.Product_number = "NN" + strconv.Itoa(index)
-	// 		}
-	// 		log.Println("writing", i)
-	// 		db.Create(i, "yahuoku_items")
-	// 	}
-	// }
-
-	// log.Println("START", "tomokimi_777")
-	// yj := crawler.Get_items_on_yahuoku("tomokimi_777")
-	// log.Println("tomokimi_777 items: ", len(yj))
-	// for index, i := range yj {
-	// 	if !i.Sold {
-	// 		if i.Product_number == "NON" {
-	// 			i.Product_number = "NN" + strconv.Itoa(index)
-	// 		}
-	// 		log.Println("writing", i)
-	// 		db.Create(i, "yahuoku_items")
-	// 	}
-	// }
 }
 
 func wtest() {

@@ -31,6 +31,14 @@ func init() {
 
 }
 
+func Create_table(table_name string) {
+	db.Table(table_name).DeleteTable().Run()
+	err := db.CreateTable(table_name, model.Item_info_mercari{}).Run()
+	if err != nil {
+		panic(err)
+	}
+}
+
 // Create() はmodel.Item_infoを渡すとPUTする関数
 func Create(item model.Item_info_mercari, table_name string) {
 	table := db.Table(table_name)
