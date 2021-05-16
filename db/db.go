@@ -44,7 +44,7 @@ func Create_s(item model.Item_info_mercari, table_name string) {
 	av, err := dynamodbattribute.MarshalMap(item)
 	if err != nil {
 		fmt.Println(err.Error())
-		log.Panicln(1)
+
 		return
 	}
 	input := &dynamodb.PutItemInput{
@@ -54,11 +54,10 @@ func Create_s(item model.Item_info_mercari, table_name string) {
 	_, err = db2.PutItem(input)
 	if err != nil {
 		fmt.Println(err.Error())
-		log.Panicln(2)
+
 		return
 	}
 	log.Println(11111)
-
 }
 
 func Scan(table_name string) []model.Item_info_mercari {
