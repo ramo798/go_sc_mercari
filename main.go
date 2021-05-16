@@ -76,7 +76,7 @@ func division() {
 			if j.Product_number == "NON" {
 				j.Product_number = "NN" + strconv.Itoa(index)
 			}
-			j.Product_number = strconv.Itoa(index) + j.Product_number
+			j.Product_number = strconv.Itoa(index) + "+" + j.Product_number
 			log.Println("writing", j)
 			db.Create(j, "yahuoku_items")
 		}
