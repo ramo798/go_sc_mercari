@@ -16,7 +16,7 @@ func init() {
 	sess, err := session.NewSession(&aws.Config{
 		Region: aws.String("ap-northeast-1"),
 		// Endpoint:    aws.String(os.Getenv("DYNAMO_ENDPOINT")),
-		Endpoint:    aws.String("http://localhost:8000"),
+		Endpoint:    aws.String("http://dynamodb-local:8000"),
 		Credentials: credentials.NewStaticCredentials("fakeMyKeyId", "fakeSecretAccessKey", ""),
 	})
 	if err != nil {

@@ -5,9 +5,10 @@ import (
 	"strconv"
 	"test/crawler"
 	"test/db"
+	"time"
 )
 
-func main() {
+func division() {
 	log.Println("START", "maron")
 	mercari_items := crawler.Get_items_on_mercari("951762445", "maron")
 	log.Println("maron items: ", len(mercari_items))
@@ -16,7 +17,7 @@ func main() {
 			if i.Product_number == "NON" {
 				i.Product_number = "NN" + strconv.Itoa(index)
 			}
-			// log.Println("writing", i)
+			log.Println("writing", i)
 			db.Create(i, "mercari_items")
 		}
 
@@ -31,7 +32,7 @@ func main() {
 			if i.Product_number == "NON" {
 				i.Product_number = "NN" + strconv.Itoa(index)
 			}
-			// log.Println("writing", i)
+			log.Println("writing", i)
 			db.Create(i, "yahuoku_items")
 		}
 	}
@@ -44,12 +45,17 @@ func main() {
 			if i.Product_number == "NON" {
 				i.Product_number = "NN" + strconv.Itoa(index)
 			}
-			// log.Println("writing", i)
+			log.Println("writing", i)
 			db.Create(i, "yahuoku_items")
 		}
 	}
+}
 
-	// fmt.Println(db.Scan("yahuoku_items"))
+func main() {
+	// division()
+	time.Sleep(time.Second * 10)
+	log.Println("start")
+	log.Println(db.Scan("yahuoku_items"))
 
 	// csvmaker.Makecsv()
 

@@ -19,3 +19,8 @@ services:
     volumes:
       - "./docker/dynamodb:/home/dynamodblocal/data"
     working_dir: /home/dynamodblocal
+
+  ym-crawler:
+    build: .
+    depends_on:
+      - dynamodb-local
