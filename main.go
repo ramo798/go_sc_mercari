@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 	"test/crawler"
@@ -72,8 +71,15 @@ func division() {
 		}
 	}
 
-	for _, j := range n_unic {
-		fmt.Println(j)
+	for index, j := range n_unic {
+		if !j.Sold {
+			if j.Product_number == "NON" {
+				j.Product_number = "NN" + strconv.Itoa(index)
+			}
+			j.Product_number = strconv.Itoa(index) + j.Product_number
+			log.Println("writing", j)
+			db.Create(j, "yahuoku_items")
+		}
 	}
 
 	// log.Println("younghoho_1121 items: ", len(yi))
