@@ -52,10 +52,12 @@ func division() {
 }
 
 func main() {
-	// division()
 	time.Sleep(time.Second * 10)
 	log.Println("start")
-	log.Println(db.Scan("yahuoku_items"))
+	division()
+
+	// log.Println("start")
+	// log.Println(db.Scan("yahuoku_items"))
 
 	// csvmaker.Makecsv()
 
