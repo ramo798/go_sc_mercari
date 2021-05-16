@@ -4,7 +4,6 @@ import (
 	"log"
 	"strconv"
 	"test/crawler"
-	"test/csvmaker"
 	"test/db"
 )
 
@@ -50,9 +49,10 @@ func main() {
 		}
 	}
 
-	// // db.Scan("yahuoku_items")
+	// fmt.Println(db.Scan("yahuoku_items"))
 
-	csvmaker.Makecsv()
+	// csvmaker.Makecsv()
 
 	// crawler.Get_items_on_yahuoku("tomokimi_777")
+
 }

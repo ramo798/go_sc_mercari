@@ -1,0 +1,21 @@
+# version: "3.8"
+# services:
+#   ym-crawler:
+#     build: .
+#     environment:
+#       DYNAMO_ENDPOINT: dynamodb:8000
+#       AWS_REGION: ap-northeast-1
+#       AWS_ACCESS_KEY_ID: fake
+#       AWS_SECRET_ACCESS_KEY: fake
+
+version: "3.8"
+services:
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
