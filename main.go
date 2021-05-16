@@ -18,7 +18,7 @@ func division() {
 				i.Product_number = "NN" + strconv.Itoa(index)
 			}
 			log.Println("writing", i)
-			db.Create(i, "mercari_items")
+			db.Create_s(i, "mercari_items")
 		}
 
 	}
@@ -33,7 +33,7 @@ func division() {
 				i.Product_number = "NN" + strconv.Itoa(index)
 			}
 			log.Println("writing", i)
-			db.Create(i, "yahuoku_items")
+			db.Create_s(i, "yahuoku_items")
 		}
 	}
 
@@ -46,7 +46,7 @@ func division() {
 				i.Product_number = "NN" + strconv.Itoa(index)
 			}
 			log.Println("writing", i)
-			db.Create(i, "yahuoku_items")
+			db.Create_s(i, "yahuoku_items")
 		}
 	}
 }
@@ -56,11 +56,8 @@ func main() {
 	log.Println("start")
 	division()
 
-	// log.Println("start")
-	// log.Println(db.Scan("yahuoku_items"))
+	log.Println("stop")
 
 	// csvmaker.Makecsv()
-
-	// crawler.Get_items_on_yahuoku("tomokimi_777")
 
 }
