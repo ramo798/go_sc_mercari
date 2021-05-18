@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"log"
+	"os"
 	"test/model"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -17,15 +18,28 @@ var db *dynamo.DB
 var db2 *dynamodb.DynamoDB
 
 func init() {
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String("ap-northeast-1"),
-		// Endpoint:    aws.String(os.Getenv("DYNAMO_ENDPOINT")),
-		Endpoint:    aws.String("http://dynamodb-local:8000"),
-		Credentials: credentials.NewStaticCredentials("fakeMyKeyId", "fakeSecretAccessKey", ""),
-	})
-	if err != nil {
-		panic(err)
+	var sess *session.Session
+	var err error
+
+	if len(os.Getenv("DYNAMO_ENDPOINT")) != 0 {
+		sess, err = session.NewSession(&aws.Config{
+			Region:      aws.String("ap-northeast-1"),
+			Endpoint:    aws.String(os.Getenv("DYNAMO_ENDPOINT")),
+			Credentials: credentials.NewStaticCredentials("fakeMyKeyId", "fakeSecretAccessKey", ""),
+		})
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		sess, err = session.NewSession(&aws.Config{
+			Region:      aws.String("ap-northeast-1"),
+			Credentials: credentials.NewStaticCredentials(os.Getenv("DYNAMO_ACCESS"), os.Getenv("DYNAMO_SECLET"), ""),
+		})
+		if err != nil {
+			panic(err)
+		}
 	}
+
 	db = dynamo.New(sess)
 	db2 = dynamodb.New(sess)
 

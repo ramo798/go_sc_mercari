@@ -1,12 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 	"test/crawler"
 	"test/db"
 	"test/model"
-	"time"
+
+	"github.com/aws/aws-lambda-go/lambda"
 )
 
 func unique(list []model.Item_info_mercari) ([]model.Item_info_mercari, []model.Item_info_mercari) {
@@ -35,8 +37,8 @@ func unique(list []model.Item_info_mercari) ([]model.Item_info_mercari, []model.
 }
 
 func division() {
-	db.Create_table("mercari_items")
-	db.Create_table("yahuoku_items")
+	// db.Create_table("mercari_items")
+	// db.Create_table("yahuoku_items")
 
 	log.Println("START", "maron")
 	mercari_items := crawler.Get_items_on_mercari("951762445", "maron")
@@ -121,15 +123,23 @@ func wtest() {
 
 }
 
-func main() {
-	time.Sleep(time.Second * 10)
-	log.Println("start")
-	// wtest()
-	division()
-	// fmt.Println(db.Scan("yahuoku_items"))
-	// fmt.Println(len(db.Scan("yahuoku_items")))
-	log.Println("stop")
+type MyEvent struct {
+	Name string `json:"What is your name?"`
+}
 
+type MyResponse struct {
+	Message string `json:"Answer:"`
+}
+
+func hello(event MyEvent) (MyResponse, error) {
+	division()
+	return MyResponse{Message: fmt.Sprintf("Hello %s!!", event.Name)}, nil
+}
+
+func main() {
+	// division()
 	// csvmaker.Makecsv()
+
+	lambda.Start(hello)
 
 }

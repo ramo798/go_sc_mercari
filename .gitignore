@@ -1,3 +1,6 @@
 *.csv
 *.exe
 memomo.txt
+/docker
+hello
+*.zip
