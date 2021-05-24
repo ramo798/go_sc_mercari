@@ -92,6 +92,7 @@ func Get_details_item(url string) model.Item_info_mercari {
 	title := doc.Find(".item-name").First().Text()
 
 	price := doc.Find(".item-price-box .item-price").First().Text()
+	price = strings.Replace(price, "\n", "", -1)
 
 	item_info := model.Item_info_mercari{
 		Product_number: no,
