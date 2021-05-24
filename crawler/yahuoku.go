@@ -109,11 +109,15 @@ func Get_details_item_y(url string) model.Item_info_mercari {
 	title := doc.Find(".ProductTitle__title .ProductTitle__text").First().Text()
 	// log.Println("title", title)
 
+	price := doc.Find(".Price__value").First().Text()
+	price = price[0:strings.Index(price, "（")]
+
 	item_info := model.Item_info_mercari{
 		Product_number: no,
 		Name:           title,
 		Url:            url,
 		Sold:           soldout,
+		Price:          price,
 	}
 
 	return item_info

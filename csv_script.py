@@ -11,7 +11,7 @@ ya = []
 
 me = []
 
-with open('Inventory_20210519.csv', "r", encoding="utf-8", errors="", newline="") as f:
+with open('Inventory_20210521.csv', "r", encoding="utf-8", errors="", newline="") as f:
     reader = csv.reader(f)
     next(reader)
     for row in reader:

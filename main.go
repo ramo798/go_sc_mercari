@@ -5,10 +5,9 @@ import (
 	"log"
 	"strconv"
 	"test/crawler"
+	"test/csvmaker"
 	"test/db"
 	"test/model"
-
-	"github.com/aws/aws-lambda-go/lambda"
 )
 
 func unique(list []model.Item_info_mercari) ([]model.Item_info_mercari, []model.Item_info_mercari) {
@@ -37,8 +36,8 @@ func unique(list []model.Item_info_mercari) ([]model.Item_info_mercari, []model.
 }
 
 func division() {
-	// db.Create_table("mercari_items")
-	// db.Create_table("yahuoku_items")
+	db.Create_table("mercari_items")
+	db.Create_table("yahuoku_items")
 
 	log.Println("START", "maron")
 	mercari_items := crawler.Get_items_on_mercari("951762445", "maron")
@@ -64,7 +63,6 @@ func division() {
 			db.Create(j, "mercari_items")
 		}
 	}
-	// db.Scan("mercari_items")
 
 	var y_items []model.Item_info_mercari
 
@@ -137,9 +135,9 @@ func hello(event MyEvent) (MyResponse, error) {
 }
 
 func main() {
-	// division()
-	// csvmaker.Makecsv()
+	division()
+	csvmaker.Makecsv()
 
-	lambda.Start(hello)
+	// lambda.Start(hello)
 
 }

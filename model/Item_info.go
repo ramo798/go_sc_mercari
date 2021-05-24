@@ -7,4 +7,5 @@ type Item_info_mercari struct {
 	Sold           bool   `dynamo:"Sold" csv:"SOLD" dynamodbav:"Sold"`
 	Username       string `dynamo:"Username" csv:"Username" dynamodbav:"Username"`
 	Duplicate      bool   `dynamo:"Duplicate" csv:"Duplicate" dynamodbav:"Duplicate"`
+	Price          string `dynamo:"Price" csv:"Price" dynamodbav:"Price"`
 }
