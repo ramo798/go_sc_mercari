@@ -109,7 +109,7 @@ func Get_details_item_y(url string) model.Item_info_mercari {
 	title := doc.Find(".ProductTitle__title .ProductTitle__text").First().Text()
 	// log.Println("title", title)
 
-	price := doc.Find(".Price__value").First().Text()
+	price := doc.Find(".ProductInformation__item .Price__value").First().Text()
 	price = price[0:strings.Index(price, "（")]
 	price = strings.Replace(price, "\n", "", -1)
 
