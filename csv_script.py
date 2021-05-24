@@ -64,7 +64,7 @@ for a in inv:
         if p_no(a[1]) == j[0]:
             rowin[4] = "1"
             rowin[7] = j[2]
-            rowin[8] = i[6]
+            # rowin[8] = i[6]
 
             print(j[2])
 
